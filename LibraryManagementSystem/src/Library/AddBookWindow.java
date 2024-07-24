@@ -8,51 +8,56 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
 public class AddBookWindow extends JFrame {
-    private JTextField titleField;
-    private JTextField authorField;
-    private JTextField genreField;
-    private JButton saveButton;
+	private final JTextField titleField;
+	private final JTextField authorField;
+	private final JTextField genreField;
+	private final Connection dbConnection;
 
-    public AddBookWindow() {
-        setTitle("Add Book");
-        setSize(400, 300);
-        setLayout(new BoxLayout(getContentPane(), BoxLayout.Y_AXIS));
+	public AddBookWindow(Connection dbConnection) {
+		this.dbConnection = dbConnection;
 
-        titleField = new JTextField("Title");
-        authorField = new JTextField("Author");
-        genreField = new JTextField("Genre");
-        saveButton = new JButton("Save");
+		setTitle("Add Book");
+		setSize(400, 300);
+		setLayout(new BoxLayout(getContentPane(), BoxLayout.Y_AXIS));
+		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
-        add(titleField);
-        add(authorField);
-        add(genreField);
-        add(saveButton);
+		titleField = new JTextField("Title");
+		authorField = new JTextField("Author");
+		genreField = new JTextField("Genre");
 
-        saveButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                addBook();
-            }
-        });
-    }
+		JButton saveButton = new JButton("Save");
+		saveButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				addBook();
+			}
+		});
 
-    private void addBook() {
-        String title = titleField.getText();
-        String author = authorField.getText();
-        String genre = genreField.getText();
+		add(titleField);
+		add(authorField);
+		add(genreField);
+		add(saveButton);
 
-        try (Connection connection = DatabaseConnection.getConnection()) {
-            String sql = "INSERT INTO books (title, author, genre) VALUES (?, ?, ?)";
-            PreparedStatement statement = connection.prepareStatement(sql);
-            statement.setString(1, title);
-            statement.setString(2, author);
-            statement.setString(3, genre);
-            statement.executeUpdate();
+		setVisible(true);
+	}
 
-            JOptionPane.showMessageDialog(this, "Book added successfully!");
-        } catch (SQLException e) {
-            e.printStackTrace();
-            JOptionPane.showMessageDialog(this, "Error adding book: " + e.getMessage());
-        }
-    }
+	private void addBook() {
+		String title = titleField.getText();
+		String author = authorField.getText();
+		String genre = genreField.getText();
+
+		try {
+			String sql = "INSERT INTO books (title, author, genre) VALUES (?, ?, ?)";
+			PreparedStatement statement = dbConnection.prepareStatement(sql);
+			statement.setString(1, title);
+			statement.setString(2, author);
+			statement.setString(3, genre);
+			statement.executeUpdate();
+
+			JOptionPane.showMessageDialog(this, "Book added successfully!");
+		} catch (SQLException e) {
+			System.out.println("sql error adding book to database: " + e.getMessage());
+			JOptionPane.showMessageDialog(this, "Error adding book: " + e.getMessage());
+		}
+	}
 }

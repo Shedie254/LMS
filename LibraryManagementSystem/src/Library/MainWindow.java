@@ -3,85 +3,101 @@ package Library;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.Connection;
 
 public class MainWindow extends JFrame {
-    private JButton addBookButton;
-    private JButton viewBooksButton;
-    private JButton addMemberButton;
-    private JButton viewMembersButton;
-    private JButton lendBookButton;
-    private JButton returnBookButton;
-    private JButton globalSearchButton;
+	private final Connection dbConnection;
 
-    public MainWindow() {
-        setTitle("Library Management System");
-        setSize(800, 600);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setLayout(new BoxLayout(getContentPane(), BoxLayout.Y_AXIS));
+	public MainWindow(Database mainDB) {
+		this.dbConnection = mainDB.getConnection();
 
-        addBookButton = new JButton("Add Book");
-        viewBooksButton = new JButton("View Books");
-        addMemberButton = new JButton("Add Member");
-        viewMembersButton = new JButton("View Members");
-        lendBookButton = new JButton("Lend Book");
-        returnBookButton = new JButton("Return Book");
-        globalSearchButton = new JButton("Global Search");
+		// init window
+		setTitle("Library Management System");
+		setSize(800, 600);
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setLayout(new BoxLayout(getContentPane(), BoxLayout.Y_AXIS));
 
-        add(addBookButton);
-        add(viewBooksButton);
-        add(addMemberButton);
-        add(viewMembersButton);
-        add(lendBookButton);
-        add(returnBookButton);
-        add(globalSearchButton);
+		JButton addBookButton = new JButton("Add Book");
+		addBookButton.addActionListener(
+				new ActionListener() {
+					@Override
+					public void actionPerformed(ActionEvent e) {
+						new Library.AddBookWindow(dbConnection).setVisible(true);
+					}
+				});
 
-        addBookButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                new Library.AddBookWindow().setVisible(true);
-            }
-        });
+		JButton viewBooksButton = new JButton("View Books");
+		viewBooksButton.addActionListener(
+				new ActionListener() {
+					@Override
+					public void actionPerformed(ActionEvent e) {
+						new Library.ViewBooksWindow(dbConnection).setVisible(true);
+					}
+				});
 
-        viewBooksButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                new Library.ViewBooksWindow().setVisible(true);
-            }
-        });
+		JButton signUpButton = new JButton("SignUp");
+		signUpButton.addActionListener(
+				new ActionListener() {
+					@Override
+					public void actionPerformed(ActionEvent e) {
+						new SignUpWindow(dbConnection);
+					}
+				});
 
-        addMemberButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                new AddMemberWindow().setVisible(true);
-            }
-        });
+		JButton loginButton = new JButton("Login");
+		loginButton.addActionListener(
+				new ActionListener() {
+					@Override
+					public void actionPerformed(ActionEvent e) {
+						new LoginWindow(dbConnection);
+					}
+				});
 
-        viewMembersButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                new ViewMembersWindow().setVisible(true);
-            }
-        });
+		JButton viewMembersButton = new JButton("View Members");
+		viewMembersButton.addActionListener(
+				new ActionListener() {
+					@Override
+					public void actionPerformed(ActionEvent e) {
+						new ViewMembersWindow(dbConnection).setVisible(true);
+					}
+				});
 
-        lendBookButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                new LendBookWindow().setVisible(true);
-            }
-        });
+		JButton lendBookButton = new JButton("Lend Book");
+		lendBookButton.addActionListener(
+				new ActionListener() {
+					@Override
+					public void actionPerformed(ActionEvent e) {
+						new LendBookWindow(dbConnection).setVisible(true);
+					}
+				});
 
-        returnBookButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                new ReturnBookWindow().setVisible(true);
-            }
-        });
+		JButton returnBookButton = new JButton("Return Book");
+		returnBookButton.addActionListener(
+				new ActionListener() {
+					@Override
+					public void actionPerformed(ActionEvent e) {
+						new ReturnBookWindow(dbConnection).setVisible(true);
+					}
+				});
 
-        globalSearchButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                new GlobalSearchWindow().setVisible(true);
-            }
-        });
-    }
+		JButton globalSearchButton = new JButton("Global Search");
+		globalSearchButton.addActionListener(
+				new ActionListener() {
+					@Override
+					public void actionPerformed(ActionEvent e) {
+						new GlobalSearchWindow(dbConnection).setVisible(true);
+					}
+				});
+
+		add(addBookButton);
+		add(viewBooksButton);
+		add(signUpButton);
+		add(loginButton);
+		add(viewMembersButton);
+		add(lendBookButton);
+		add(returnBookButton);
+		add(globalSearchButton);
+
+		setVisible(true);
+	}
 }

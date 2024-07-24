@@ -7,46 +7,48 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 public class ViewBooksWindow extends JFrame {
-    private JTable booksTable;
+	private final Connection dbConnection;
 
-    public ViewBooksWindow() {
-        setTitle("View Books");
-        setSize(800, 600);
-        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+	public ViewBooksWindow(Connection dbConnection) {
+		this.dbConnection = dbConnection;
 
-        String[] columnNames = {"ID", "Title", "Author", "Genre", "Available"};
-        Object[][] data = fetchBooksData();
+		setTitle("View Books");
+		setSize(800, 600);
+		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
-        booksTable = new JTable(data, columnNames);
-        JScrollPane scrollPane = new JScrollPane(booksTable);
-        add(scrollPane);
-    }
+		String[] columnNames = {"ID", "Title", "Author", "Genre", "Available"};
+		Object[][] data = fetchBooksData();
 
-    private Object[][] fetchBooksData() {
-        try (Connection connection = DatabaseConnection.getConnection()) {
-            Statement statement = connection.createStatement();
-            ResultSet resultSet = statement.executeQuery("SELECT * FROM books");
+		JTable booksTable = new JTable(data, columnNames);
+		JScrollPane scrollPane = new JScrollPane(booksTable);
+		add(scrollPane);
+	}
 
-            resultSet.last();
-            int rowCount = resultSet.getRow();
-            resultSet.beforeFirst();
+	private Object[][] fetchBooksData() {
+		try {
+			Statement statement = dbConnection.createStatement();
+			ResultSet resultSet = statement.executeQuery("SELECT * FROM books");
 
-            Object[][] data = new Object[rowCount][5];
-            int i = 0;
+			resultSet.last();
+			int rowCount = resultSet.getRow();
+			resultSet.beforeFirst();
 
-            while (resultSet.next()) {
-                data[i][0] = resultSet.getInt("id");
-                data[i][1] = resultSet.getString("title");
-                data[i][2] = resultSet.getString("author");
-                data[i][3] = resultSet.getString("genre");
-                data[i][4] = resultSet.getBoolean("is_available");
-                i++;
-            }
+			Object[][] data = new Object[rowCount][5];
+			int i = 0;
 
-            return data;
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return new Object[0][0];
-        }
-    }
+			while (resultSet.next()) {
+				data[i][0] = resultSet.getInt("id");
+				data[i][1] = resultSet.getString("title");
+				data[i][2] = resultSet.getString("author");
+				data[i][3] = resultSet.getString("genre");
+				data[i][4] = resultSet.getBoolean("is_available");
+				i++;
+			}
+
+			return data;
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return new Object[0][0];
+		}
+	}
 }
