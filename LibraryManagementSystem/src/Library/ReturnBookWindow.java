@@ -1,6 +1,6 @@
 package Library;
 
-public class AddMemberWindow {
+public class ReturnBookWindow {
 
     public void setVisible(boolean b) {
         // TODO Auto-generated method stub
