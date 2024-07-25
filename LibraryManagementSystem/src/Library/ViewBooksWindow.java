@@ -1,10 +1,8 @@
 package Library;
 
 import javax.swing.*;
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
+import java.util.ArrayList;
 
 public class ViewBooksWindow extends JFrame {
 	private final Connection dbConnection;
@@ -26,14 +24,12 @@ public class ViewBooksWindow extends JFrame {
 
 	private Object[][] fetchBooksData() {
 		try {
-			Statement statement = dbConnection.createStatement();
-			ResultSet resultSet = statement.executeQuery("SELECT * FROM books");
+			String query = "SELECT * FROM books";
+			PreparedStatement statement = dbConnection.prepareStatement(query,
+					ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+			ResultSet resultSet = statement.executeQuery();
 
-			resultSet.last();
-			int rowCount = resultSet.getRow();
-			resultSet.beforeFirst();
-
-			Object[][] data = new Object[rowCount][5];
+			Object[][] data = new Object[10][5];
 			int i = 0;
 
 			while (resultSet.next()) {
