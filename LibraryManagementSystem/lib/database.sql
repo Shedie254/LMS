@@ -1,38 +1,42 @@
 CREATE DATABASE library_db;
 USE library_db;
 
-CREATE TABLE books (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    title VARCHAR(255) NOT NULL,
-    author VARCHAR(255) NOT NULL,
-    genre VARCHAR(255),
-    is_available BOOLEAN DEFAULT TRUE
+CREATE TABLE IF NOT EXISTS `Roles` (
+    `role_id` ENUM('admin', 'librarian', 'user') NOT NULL,
+    PRIMARY KEY (`role_id`)
 );
 
-CREATE TABLE roles (
-    role_id INT AUTO_INCREMENT PRIMARY KEY,
-    role_name ENUM('Member', 'Librarian', 'sysadmin') NOT NULL
+CREATE TABLE IF NOT EXISTS `users` (
+    `id` INT AUTO_INCREMENT PRIMARY KEY,
+    `name` VARCHAR(50) UNIQUE NOT NULL,
+    `email` VARCHAR(50) UNIQUE NOT NULL,
+    `password` VARCHAR(255) NOT NULL,
+    `role_id` ENUM('admin', 'librarian', 'user') NOT NULL,
+    CONSTRAINT `fk_user_role` FOREIGN KEY (`role_id`) REFERENCES `Roles`(`role_id`)
 );
 
-CREATE TABLE members (
-    user_id INT AUTO_INCREMENT PRIMARY KEY,
-    name VARCHAR(255) NOT NULL,
-    email VARCHAR(255) UNIQUE NOT NULL,
-    role_id INT NOT NULL,
-    join_date DATE NOT NULL DEFAULT CURRENT_DATE,
-    membership_expiry_date DATE,
-    password VARCHAR(255) NOT NULL,
-    FOREIGN KEY (role_id) REFERENCES roles(role_id)
+CREATE TABLE IF NOT EXISTS `Books` (
+    `book_id` INT AUTO_INCREMENT PRIMARY KEY,
+    `title` VARCHAR(100) NOT NULL,
+    `author` VARCHAR(100) NOT NULL,
+    `genre` VARCHAR(100) NOT NULL,
+    `status` BOOLEAN NOT NULL
 );
 
+CREATE TABLE IF NOT EXISTS `Borrowed_books` (
+    `book_id` INT NOT NULL,
+    `user_id` INT NOT NULL,
+    `issue_date` DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL,
+    `return_date` DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL,
+    CONSTRAINT `fk_book_id` FOREIGN KEY (`book_id`) REFERENCES `Books`(`book_id`),
+    CONSTRAINT `fk_user_id` FOREIGN KEY (`user_id`) REFERENCES `users`(`id`),
+    PRIMARY KEY (`book_id`, `user_id`)
+);
 
-CREATE TABLE transactions (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    member_id INT,
-    book_id INT,
-    issue_date DATE,
-    return_date DATE,
-    fine DOUBLE DEFAULT 0.0,
-    FOREIGN KEY (member_id) REFERENCES members(id),
-    FOREIGN KEY (book_id) REFERENCES books(id)
+CREATE TABLE IF NOT EXISTS `Fines` (
+    `fine_id` INT AUTO_INCREMENT PRIMARY KEY,
+    `user_id` INT NOT NULL,
+    `fine_amount` DECIMAL(10, 2) NOT NULL,
+    `paid` BOOLEAN NOT NULL,
+    CONSTRAINT `fk_user_id_fines` FOREIGN KEY (`user_id`) REFERENCES `users`(`id`)
 );
