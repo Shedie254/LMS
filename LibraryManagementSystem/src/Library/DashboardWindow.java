@@ -5,10 +5,10 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.Connection;
 
-public class MainWindow extends JFrame {
+public class DashboardWindow extends JFrame {
 	private final Connection dbConnection;
 
-	public MainWindow(Database mainDB) {
+	public DashboardWindow(Database mainDB) {
 		this.dbConnection = mainDB.getConnection();
 
 		// init window
