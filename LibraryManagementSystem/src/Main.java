@@ -1,5 +1,5 @@
 import Library.Database;
-import Library.MainWindow;
+import Library.DashboardWindow;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -31,7 +31,7 @@ public class Main {
 			Database libraryDB = new Database(dbUser, dbPass, dbName);
 
 			// start GUI application
-			new MainWindow(libraryDB);
+			new DashboardWindow(libraryDB);
 
 		} catch (IOException | SQLException e) {
 			System.out.println("error setting up database: " + e.getMessage());

@@ -59,6 +59,7 @@ public class LoginWindow extends JFrame {
 		gbc.gridx = 0;
 		gbc.gridy = 0;
 		gbc.insets = new Insets(10, 10, 10, 10);
+		//emailLabel.setForegroundColor(Color.Dark_Gray);
 		gbc.anchor = GridBagConstraints.EAST;
 		topPanel.add(emailLabel, gbc);
 
@@ -72,6 +73,7 @@ public class LoginWindow extends JFrame {
 		gbc.gridx = 0;
 		gbc.gridy = 1;
 		gbc.anchor = GridBagConstraints.EAST;
+		//passwordLabel.setForegroundColor(Color.Dark_Gray);
 		topPanel.add(passwordLabel, gbc);
 
 		JPasswordField passwordText = new JPasswordField(20);
@@ -84,6 +86,9 @@ public class LoginWindow extends JFrame {
 		gbc.gridx = 1;
 		gbc.gridy = 2;
 		gbc.anchor = GridBagConstraints.CENTER;
+
+		//loginButton.setBackgroundColor(Color.Green);
+		//loginButton.setForegroundColor(Color.white);
 		topPanel.add(loginButton, gbc);
 
 		loginButton.addActionListener(new ActionListener() {
