@@ -14,6 +14,7 @@ public class SignUpWindow extends JFrame {
 	private final Container contentPane;
 	private final Connection dbConnection;
 
+	//constructor method
 	public SignUpWindow(Connection dbConnection) {
 		this.dbConnection = dbConnection;
 
@@ -31,29 +32,29 @@ public class SignUpWindow extends JFrame {
 	/**
 	 * Registers a new user in the database with the provided name, email, and password.
 	 *
-	 * @param name     the name of the user
-	 * @param email    the email of the user
+	 * @param name the name of the user
+	 * @param email the email of the user
 	 * @param password the password associated with the email
 	 * @return true if the user was successfully registered, false if the user already exists or an error occurred
 	 */
 	private boolean signUpUser(String name, String email, String password) {
 		try {
-			String sql = "INSERT INTO members (name, email, password, role_id, join_date) VALUES (?, ?, ?, ?, CURRENT_DATE)";
+			String sql = "INSERT INTO users (name, email, password, role_id, join_date) VALUES (?, ?, ?, ?, CURRENT_DATE)";
 			PreparedStatement preparedStatement = dbConnection.prepareStatement(sql);
 			preparedStatement.setString(1, name);
 			preparedStatement.setString(2, email);
 			preparedStatement.setString(3, password);
 			//preparedStatement.setInt(4, 1); // Assuming role_id 1 for 'Member'
 			preparedStatement.executeUpdate();
-			return true;
+			return (true);
 		} catch (SQLIntegrityConstraintViolationException e) {
 			// User already exists
 			JOptionPane.showMessageDialog(contentPane, "User already exists");
-			return false;
+			return (false);
 		} catch (SQLException e) {
 			System.out.println("sql error inserting user: " + e.getMessage());
 			JOptionPane.showMessageDialog(contentPane, "error creating user account");
-			return false;
+			return (false);
 		}
 	}
 
@@ -66,7 +67,7 @@ public class SignUpWindow extends JFrame {
 		JPanel topPanel = new JPanel();
 		topPanel.setLayout(null);
 
-		JLabel nameLabel = new JLabel("Enter Name");
+		JLabel nameLabel = new JLabel("Enter your  Name");
 		nameLabel.setBounds(10, 20, 80, 25);
 		topPanel.add(nameLabel);
 
@@ -74,7 +75,7 @@ public class SignUpWindow extends JFrame {
 		nameText.setBounds(100, 20, 165, 25);
 		topPanel.add(nameText);
 
-		JLabel emailLabel = new JLabel("Enter Email");
+		JLabel emailLabel = new JLabel("Enter  your Email");
 		emailLabel.setBounds(10, 50, 80, 25);
 		topPanel.add(emailLabel);
 
@@ -111,6 +112,7 @@ public class SignUpWindow extends JFrame {
 				String confirmPassword = new String(confirmPasswordText.getPassword());
 
 				if (password.equals(confirmPassword)) {
+					System.out.print("passwords match");
 					if (signUpUser(name, email, password)) {
 						JOptionPane.showMessageDialog(contentPane, "Sign Up Successful!");
 						thisFrame.dispose();

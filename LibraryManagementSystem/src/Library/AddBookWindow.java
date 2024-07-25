@@ -17,7 +17,7 @@ public class AddBookWindow extends JFrame {
 		this.dbConnection = dbConnection;
 
 		setTitle("Add Book");
-		setSize(400, 300);
+		setSize(800, 600);
 		setLayout(new BoxLayout(getContentPane(), BoxLayout.Y_AXIS));
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 

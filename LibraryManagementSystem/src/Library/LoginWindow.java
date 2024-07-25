@@ -1,13 +1,23 @@
 package Library;
 
-import javax.swing.*;
-import java.awt.*;
+import java.awt.Container;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JPasswordField;
+import javax.swing.JTextField;
 
 public class LoginWindow extends JFrame {
 	private final Container contentPane;
@@ -17,25 +27,18 @@ public class LoginWindow extends JFrame {
 		this.dbConnection = dbConnection;
 
 		setTitle("Login");
-		setSize(300, 200);
+		setSize(800, 600);
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		contentPane = getContentPane();
 
 		placeLoginComponents();
 		setVisible(true);
-
 	}
-
-	/**
-	 * Authenticates a user by checking the provided email and password against the database in a table called members.
-	 *
-	 * @param email    the email entered by the user
-	 * @param password the password entered by the user
-	 * @return true if the email and password match a record in the database, false otherwise
-	 */
+	//authenticates the user
 	private boolean loginUser(String email, String password) {
 		try {
-			String sql = "SELECT * FROM members WHERE email = ? AND password = ?";
+			String sql = "SELECT * FROM users WHERE email = ? AND password = ?";
+
 			PreparedStatement preparedStatement = dbConnection.prepareStatement(sql);
 			preparedStatement.setString(1, email);
 			preparedStatement.setString(2, password);
@@ -49,28 +52,43 @@ public class LoginWindow extends JFrame {
 	}
 
 	private void placeLoginComponents() {
-		JPanel topPanel = new JPanel();
-		topPanel.setLayout(null);
+		JPanel topPanel = new JPanel(new GridBagLayout());
+		GridBagConstraints gbc = new GridBagConstraints();
 
 		JLabel emailLabel = new JLabel("Email");
-		emailLabel.setBounds(10, 20, 80, 25);
-		topPanel.add(emailLabel);
+		gbc.gridx = 0;
+		gbc.gridy = 0;
+		gbc.insets = new Insets(10, 10, 10, 10);
+		emailLabel.setForegroundColor(Color.Dark_Gray);
+		gbc.anchor = GridBagConstraints.EAST;
+		topPanel.add(emailLabel, gbc);
 
-		JTextField emailText = new JTextField(50);
-		emailText.setBounds(100, 20, 165, 25);
-		topPanel.add(emailText);
+		JTextField emailText = new JTextField(20);
+		gbc.gridx = 1;
+		gbc.gridy = 0;
+		gbc.anchor = GridBagConstraints.WEST;
+		topPanel.add(emailText, gbc);
 
 		JLabel passwordLabel = new JLabel("Password");
-		passwordLabel.setBounds(10, 50, 80, 25);
-		topPanel.add(passwordLabel);
+		gbc.gridx = 0;
+		gbc.gridy = 1;
+		gbc.anchor = GridBagConstraints.EAST;
+		passwordLabel.setForegroundColor(Color.Dark_Gray);
+		topPanel.add(passwordLabel, gbc);
 
-		JPasswordField passwordText = new JPasswordField(50);
-		passwordText.setBounds(100, 50, 165, 25);
-		topPanel.add(passwordText);
+		JPasswordField passwordText = new JPasswordField(20);
+		gbc.gridx = 1;
+		gbc.gridy = 1;
+		gbc.anchor = GridBagConstraints.WEST;
+		topPanel.add(passwordText, gbc);
 
 		JButton loginButton = new JButton("Login");
-		loginButton.setBounds(10, 80, 80, 25);
-		topPanel.add(loginButton);
+		gbc.gridx = 1;
+		gbc.gridy = 2;
+		gbc.anchor = GridBagConstraints.CENTER;
+		loginButton.setBackgroundColor(Color.Green);
+		loginButton.setForegroundColor(Color.white);
+		topPanel.add(loginButton, gbc);
 
 		loginButton.addActionListener(new ActionListener() {
 			@Override
@@ -80,13 +98,17 @@ public class LoginWindow extends JFrame {
 
 				if (loginUser(email, password)) {
 					JOptionPane.showMessageDialog(contentPane, "Login Successful!");
+					dispose();
+					new DashboardWindow(dbConnection);
 				} else {
 					JOptionPane.showMessageDialog(contentPane, "Invalid email or password!");
 				}
 			}
 		});
 
-		this.add(topPanel);
+		contentPane.setLayout(new GridBagLayout());
+		gbc.gridx = 0;
+		gbc.gridy = 0;
+		contentPane.add(topPanel, gbc);
 	}
-
 }
