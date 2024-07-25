@@ -1,7 +1,7 @@
 CREATE DATABASE library_db;
 USE library_db;
 
-CREATE TABLE IF NOT EXISTS books (
+CREATE TABLE books (
     id INT AUTO_INCREMENT PRIMARY KEY,
     title VARCHAR(255) NOT NULL,
     author VARCHAR(255) NOT NULL,
@@ -9,14 +9,24 @@ CREATE TABLE IF NOT EXISTS books (
     is_available BOOLEAN DEFAULT TRUE
 );
 
-CREATE TABLE IF NOT EXISTS members (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    name VARCHAR(255) NOT NULL,
-    email VARCHAR(255) NOT NULL,
-    fine_amount DOUBLE DEFAULT 0.0
+CREATE TABLE roles (
+    role_id INT AUTO_INCREMENT PRIMARY KEY,
+    role_name ENUM('Member', 'Librarian', 'sysadmin') NOT NULL
 );
 
-CREATE TABLE IF NOT EXISTS transactions (
+CREATE TABLE members (
+    user_id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(255) NOT NULL,
+    email VARCHAR(255) UNIQUE NOT NULL,
+    role_id INT NOT NULL,
+    join_date DATE NOT NULL DEFAULT CURRENT_DATE,
+    membership_expiry_date DATE,
+    password VARCHAR(255) NOT NULL,
+    FOREIGN KEY (role_id) REFERENCES roles(role_id)
+);
+
+
+CREATE TABLE transactions (
     id INT AUTO_INCREMENT PRIMARY KEY,
     member_id INT,
     book_id INT,
