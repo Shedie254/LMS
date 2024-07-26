@@ -89,5 +89,4 @@ nb-configuration.xml
 ##############################
 *.log
 .env
-*.class
-mysql-connector-j-9.0.0/.idea/
+mysql-connector-j-9.0.0/

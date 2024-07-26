@@ -40,9 +40,6 @@ CREATE TABLE `books` (
 -- Dumping data for table `books`
 --
 
-INSERT INTO `books` (`id`, `title`, `author`, `isbn`, `genre`, `cover_page`) VALUES
-(2, 'New book', 'John Doe ', '123456', 'Unknown', '/home/netrunner/Work/java/projects/LMS/LibraryManagementSystem/lib/images/book2.jpeg');
-
 -- --------------------------------------------------------
 
 --
