@@ -1,4 +1,4 @@
-package Library;
+package src.Library;
 
 import javax.swing.*;
 import java.sql.Connection;
@@ -13,5 +13,7 @@ public class ReturnBookWindow extends JFrame {
 		setSize(400, 300);
 		setLayout(new BoxLayout(getContentPane(), BoxLayout.Y_AXIS));
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+
+		// TODO: implement return book feature
 	}
 }

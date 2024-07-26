@@ -1,4 +1,4 @@
-package Library;
+package src.Library;
 
 import javax.swing.*;
 import java.awt.*;
@@ -32,29 +32,29 @@ public class SignUpWindow extends JFrame {
 	/**
 	 * Registers a new user in the database with the provided name, email, and password.
 	 *
-	 * @param name the name of the user
-	 * @param email the email of the user
+	 * @param name     the name of the user
+	 * @param email    the email of the user
 	 * @param password the password associated with the email
 	 * @return true if the user was successfully registered, false if the user already exists or an error occurred
 	 */
 	private boolean signUpUser(String name, String email, String password) {
 		try {
-			String sql = "INSERT INTO users (name, email, password, role_id, join_date) VALUES (?, ?, ?, ?, CURRENT_DATE)";
+			String sql = "INSERT INTO users (name, email, password, role, join_date) VALUES (?, ?, ?, ?, CURRENT_DATE)";
 			PreparedStatement preparedStatement = dbConnection.prepareStatement(sql);
 			preparedStatement.setString(1, name);
 			preparedStatement.setString(2, email);
 			preparedStatement.setString(3, password);
-			//preparedStatement.setInt(4, 1); // Assuming role_id 1 for 'Member'
+			preparedStatement.setString(4, "user"); // assuming a default role of user
 			preparedStatement.executeUpdate();
-			return (true);
+			return true;
 		} catch (SQLIntegrityConstraintViolationException e) {
 			// User already exists
 			JOptionPane.showMessageDialog(contentPane, "User already exists");
-			return (false);
+			return false;
 		} catch (SQLException e) {
-			System.out.println("sql error inserting user: " + e.getMessage());
+			System.out.println("signUpUser: sql error: " + e.getMessage());
 			JOptionPane.showMessageDialog(contentPane, "error creating user account");
-			return (false);
+			return false;
 		}
 	}
 

@@ -1,4 +1,4 @@
-package Library;
+package src.Library;
 
 import java.io.IOException;
 import java.sql.Connection;
@@ -13,8 +13,8 @@ public class Database {
 
 		// you might not need this, but kindly DO NOT DELETE
 		Class.forName("com.mysql.jdbc.Driver");
-		System.out.println("loaded MySQL drivers!");
 		dbConnection = DriverManager.getConnection(URL, dbUser, dbPass);
+		System.out.println("connected to database successfully");
 	}
 
 	public Connection getConnection() {

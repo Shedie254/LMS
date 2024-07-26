@@ -1,8 +1,10 @@
-package Library;
+package src.Library;
 
 import javax.swing.*;
-import java.sql.*;
-import java.util.ArrayList;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 
 public class ViewBooksWindow extends JFrame {
 	private final Connection dbConnection;
@@ -14,7 +16,7 @@ public class ViewBooksWindow extends JFrame {
 		setSize(800, 600);
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
-		String[] columnNames = {"ID", "Title", "Author", "Genre", "Available"};
+		String[] columnNames = {"ID", "Title", "Author", "ISBN", "Genre"};
 		Object[][] data = fetchBooksData();
 
 		JTable booksTable = new JTable(data, columnNames);
@@ -23,28 +25,28 @@ public class ViewBooksWindow extends JFrame {
 	}
 
 	private Object[][] fetchBooksData() {
+		Object[][] data = new Object[10][5];
+
 		try {
 			String query = "SELECT * FROM books";
-			PreparedStatement statement = dbConnection.prepareStatement(query,
-					ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
-			ResultSet resultSet = statement.executeQuery();
+			Statement statement = dbConnection.createStatement();
+			ResultSet resultSet = statement.executeQuery(query);
 
-			Object[][] data = new Object[10][5];
 			int i = 0;
 
 			while (resultSet.next()) {
 				data[i][0] = resultSet.getInt("id");
 				data[i][1] = resultSet.getString("title");
 				data[i][2] = resultSet.getString("author");
-				data[i][3] = resultSet.getString("genre");
-				data[i][4] = resultSet.getBoolean("is_available");
+				data[i][3] = resultSet.getString("isbn");
+				data[i][4] = resultSet.getBoolean("genre");
 				i++;
 			}
 
 			return data;
 		} catch (SQLException e) {
-			e.printStackTrace();
-			return new Object[0][0];
+			System.out.println("fetchBooksData: sql error: " + e.getMessage());
+			return data;
 		}
 	}
 }

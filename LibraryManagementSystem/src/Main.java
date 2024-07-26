@@ -1,6 +1,7 @@
-import Library.Database;
-import Library.DashboardWindow;
+package src;
 
+import src.Library.DashboardWindow;
+import src.Library.Database;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -31,13 +32,13 @@ public class Main {
 			Database libraryDB = new Database(dbUser, dbPass, dbName);
 
 			// start GUI application
-			new DashboardWindow(libraryDB);
+			new DashboardWindow(libraryDB.getConnection());
 
 		} catch (IOException | SQLException e) {
-			System.out.println("error setting up database: " + e.getMessage());
+			System.out.println("main: error connecting to database: " + e.getMessage());
 			System.exit(0);
 		} catch (ClassNotFoundException e) {
-			System.out.println("database connection failed because MySQL drivers not loaded: " + e.getMessage());
+			System.out.println("main: error connecting to database - MySQL drivers not loaded: " + e.getMessage());
 			System.exit(0);
 		}
 	}

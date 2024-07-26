@@ -1,23 +1,13 @@
-package Library;
+package src.Library;
 
-import java.awt.Container;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.awt.Insets;
+import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JPasswordField;
-import javax.swing.JTextField;
 
 public class LoginWindow extends JFrame {
 	private final Container contentPane;
@@ -34,6 +24,7 @@ public class LoginWindow extends JFrame {
 		placeLoginComponents();
 		setVisible(true);
 	}
+
 	//authenticates the user
 	private boolean loginUser(String email, String password) {
 		try {
@@ -45,7 +36,7 @@ public class LoginWindow extends JFrame {
 			ResultSet resultSet = preparedStatement.executeQuery();
 			return resultSet.next();
 		} catch (SQLException e) {
-			System.out.println("sql error logging in user: " + e.getMessage());
+			System.out.println("loginUser: sql error: " + e.getMessage());
 			JOptionPane.showMessageDialog(contentPane, "error logging in");
 			return false;
 		}
@@ -60,6 +51,7 @@ public class LoginWindow extends JFrame {
 		gbc.gridy = 0;
 		gbc.insets = new Insets(10, 10, 10, 10);
 		//emailLabel.setForegroundColor(Color.Dark_Gray);
+
 		gbc.anchor = GridBagConstraints.EAST;
 		topPanel.add(emailLabel, gbc);
 
@@ -74,6 +66,7 @@ public class LoginWindow extends JFrame {
 		gbc.gridy = 1;
 		gbc.anchor = GridBagConstraints.EAST;
 		//passwordLabel.setForegroundColor(Color.Dark_Gray);
+
 		topPanel.add(passwordLabel, gbc);
 
 		JPasswordField passwordText = new JPasswordField(20);
@@ -86,9 +79,9 @@ public class LoginWindow extends JFrame {
 		gbc.gridx = 1;
 		gbc.gridy = 2;
 		gbc.anchor = GridBagConstraints.CENTER;
-
 		//loginButton.setBackgroundColor(Color.Green);
 		//loginButton.setForegroundColor(Color.white);
+
 		topPanel.add(loginButton, gbc);
 
 		loginButton.addActionListener(new ActionListener() {

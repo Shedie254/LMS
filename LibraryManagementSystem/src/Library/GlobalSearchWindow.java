@@ -1,10 +1,9 @@
-package Library;
+package src.Library;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -83,23 +82,10 @@ public class GlobalSearchWindow extends JFrame {
 				resultArea.setText(results.toString());
 			}
 		} catch (SQLException e) {
+			System.out.println("searchDatabase: sql error: " + e.getMessage());
 			JOptionPane.showMessageDialog(this, "Error querying the database.", "Error", JOptionPane.ERROR_MESSAGE);
-			e.printStackTrace();
 		}
 	}
 
-	public static void main(String[] args) {
-		try {
-			Database database = new Database("dbUser", "dbPass", "dbName");
-			Connection dbConnection = database.getConnection();
-
-			GlobalSearchWindow window = new GlobalSearchWindow(dbConnection);
-			window.setVisible(true);
-		} catch (SQLException | ClassNotFoundException e) {
-			e.printStackTrace();
-			JOptionPane.showMessageDialog(null, "Failed to connect to the database.", "Error", JOptionPane.ERROR_MESSAGE);
-		} catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-    }
+	// this is not the entry for our program. Please refer to Main.java file
 }

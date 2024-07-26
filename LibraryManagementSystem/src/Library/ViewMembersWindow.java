@@ -1,4 +1,4 @@
-package Library;
+package src.Library;
 
 import javax.swing.*;
 import java.sql.Connection;

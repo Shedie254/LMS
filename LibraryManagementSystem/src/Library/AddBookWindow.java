@@ -1,4 +1,4 @@
-package Library;
+package src.Library;
 
 import javax.swing.*;
 import java.awt.*;
@@ -10,10 +10,10 @@ import java.sql.PreparedStatement;
 
 public class AddBookWindow extends JFrame {
 	private final Connection dbConnection;
-	private JTextField titleField;
-	private JTextField authorField;
-	private JTextField isbnField;
-	private JLabel coverImageLabel;
+	private final JTextField titleField;
+	private final JTextField authorField;
+	private final JTextField isbnField;
+	private final JLabel coverImageLabel;
 	private File selectedFile;
 
 	public AddBookWindow(Connection connection) {
@@ -77,7 +77,7 @@ public class AddBookWindow extends JFrame {
 		String coverImagePath = selectedFile != null ? selectedFile.getAbsolutePath() : null;
 
 		try {
-			String sql = "INSERT INTO books (title, author, isbn, coverpage) VALUES (?, ?, ?, ?)";
+			String sql = "INSERT INTO books (title, author, isbn, cover_page) VALUES (?, ?, ?, ?)";
 			PreparedStatement preparedStatement = dbConnection.prepareStatement(sql);
 			preparedStatement.setString(1, title);
 			preparedStatement.setString(2, author);
@@ -88,8 +88,10 @@ public class AddBookWindow extends JFrame {
 			JOptionPane.showMessageDialog(this, "Book added successfully!");
 			dispose();
 		} catch (Exception ex) {
-			ex.printStackTrace();
-			JOptionPane.showMessageDialog(this, "Error adding book: " + ex.getMessage());
+			System.out.println("addBook: sql error: " + ex.getMessage());
+
+			// security warning: never display program exception messages to the user
+			JOptionPane.showMessageDialog(this, "Error adding book");
 		}
 	}
 }
