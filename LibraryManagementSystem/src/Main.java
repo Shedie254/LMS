@@ -1,7 +1,6 @@
-package src;
+import Library.DashboardWindow;
+import Library.Database;
 
-import src.Library.DashboardWindow;
-import src.Library.Database;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;

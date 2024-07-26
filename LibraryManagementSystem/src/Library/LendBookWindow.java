@@ -1,4 +1,4 @@
-package src.Library;
+package Library;
 
 import javax.swing.*;
 import java.awt.*;
@@ -19,12 +19,10 @@ public class LendBookWindow extends JFrame {
 		setLayout(new BoxLayout(getContentPane(), BoxLayout.Y_AXIS));
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
-		Font arialFont = new Font("Arial", Font.PLAIN, 12);
-
 		JPanel panel = new JPanel();
 		panel.setLayout(new FlowLayout());
 
-		Path imageFile = Paths.get(System.getProperty("user.dir"), "lib", "images", "book1.jpeg");
+		Path imageFile = Paths.get(System.getProperty("user.dir"), "LibraryManagementSystem", "lib", "images", "book1.jpeg");
 		ImageIcon icon = new ImageIcon(imageFile.toString());
 		JLabel bookCover = new JLabel(icon);
 		panel.add(bookCover);

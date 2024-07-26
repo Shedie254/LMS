@@ -1,4 +1,4 @@
-package src.Library;
+package Library;
 
 import javax.swing.*;
 import java.awt.*;
@@ -109,13 +109,15 @@ public class DashboardWindow extends JFrame {
 		Path imageDir = Paths.get(projectRootDir, "LibraryManagementSystem", "lib", "images");
 
 		for (int i = 1; i <= 8; i++) {
-			String filename = "\\book" + i + ".jpeg";
-			String imageFile = imageDir + filename;
+			String filename = "book" + i + ".jpeg";
+			String imageFile = Paths.get(imageDir.toString(), filename).toString();
 
 			File file = new File(imageFile);
-			if (file.exists()) {
-				System.out.println(imageFile);
-
+			if (!file.exists()) {
+				// inverted control flow, to log book cover pages not loaded.
+				// TODO: show a default ImageIcon for books with no cover pages.
+				System.out.println("DashboardWindow: missing book cover " + imageFile);
+			} else {
 				ImageIcon imageIcon = new ImageIcon(imageFile);
 				JLabel imageLabel = new JLabel(imageIcon);
 				imageLabel.addMouseListener(new java.awt.event.MouseAdapter() {

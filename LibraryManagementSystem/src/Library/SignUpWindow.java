@@ -1,4 +1,4 @@
-package src.Library;
+package Library;
 
 import javax.swing.*;
 import java.awt.*;
