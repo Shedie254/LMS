@@ -14,12 +14,12 @@ public class SignUpWindow extends JFrame {
 	private final Container contentPane;
 	private final Connection dbConnection;
 
-	//constructor method
+	// Constructor method
 	public SignUpWindow(Connection dbConnection) {
 		this.dbConnection = dbConnection;
 
 		setTitle("Register");
-		setSize(300, 200);
+		setSize(800, 600);
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
 		thisFrame = this;
@@ -30,78 +30,113 @@ public class SignUpWindow extends JFrame {
 	}
 
 	/**
-	 * Registers a new user in the database with the provided name, email, and password.
-	 *
-	 * @param name     the name of the user
-	 * @param email    the email of the user
-	 * @param password the password associated with the email
-	 * @return true if the user was successfully registered, false if the user already exists or an error occurred
-	 */
-	private boolean signUpUser(String name, String email, String password) {
-		try {
-			String sql = "INSERT INTO users (name, email, password, role, join_date) VALUES (?, ?, ?, ?, CURRENT_DATE)";
-			PreparedStatement preparedStatement = dbConnection.prepareStatement(sql);
-			preparedStatement.setString(1, name);
-			preparedStatement.setString(2, email);
-			preparedStatement.setString(3, password);
-			preparedStatement.setString(4, "user"); // assuming a default role of user
-			preparedStatement.executeUpdate();
-			return true;
-		} catch (SQLIntegrityConstraintViolationException e) {
-			// User already exists
-			JOptionPane.showMessageDialog(contentPane, "User already exists");
-			return false;
-		} catch (SQLException e) {
-			System.out.println("signUpUser: sql error: " + e.getMessage());
-			JOptionPane.showMessageDialog(contentPane, "error creating user account");
-			return false;
-		}
-	}
-
-	/**
 	 * Places the signup components on the specified panel and sets up the signup button's action listener.
 	 * This method arranges the name, email, password, and confirm password fields along with the signup button on the panel.
 	 * When the signup button is clicked, it attempts to register the user with the provided details.
 	 */
 	private void placeSignUpComponents() {
-		JPanel topPanel = new JPanel();
-		topPanel.setLayout(null);
+		JPanel panel = new JPanel(new GridBagLayout());
+		GridBagConstraints gbc = new GridBagConstraints();
+		gbc.insets = new Insets(10, 10, 10, 10);
+		gbc.fill = GridBagConstraints.HORIZONTAL;
 
-		JLabel nameLabel = new JLabel("Enter your  Name");
-		nameLabel.setBounds(10, 20, 80, 25);
-		topPanel.add(nameLabel);
+		Font labelFont = new Font("Arial", Font.BOLD, 15);
+		Color labelColor = new Color(17, 24, 39, 255);
+		Color inputColor = new Color(31, 41, 55, 255);
+		Font hFont = new Font("Arial", Font.BOLD, 20);
+		Font inputFont = new Font("Arial", Font.PLAIN, 12);
+		Color btnBgColor = new Color(0, 171, 0, 255);
+		Insets margin = new Insets(5, 5, 5, 5);
+
+		// Heading label
+		JLabel heading = new JLabel("Library Management System");
+		heading.setForeground(labelColor);
+		heading.setFont(hFont);
+		heading.setHorizontalAlignment(SwingConstants.CENTER);
+		gbc.gridwidth = 2;
+		gbc.gridx = 0;
+		gbc.gridy = 0;
+		panel.add(heading, gbc);
+
+		// Reset width
+		gbc.gridwidth = 1;
+
+		JLabel nameLabel = new JLabel("Enter your Name");
+		nameLabel.setForeground(labelColor);
+		nameLabel.setFont(labelFont);
+		gbc.gridx = 0;
+		gbc.gridy = 1;
+		gbc.anchor = GridBagConstraints.EAST;
+		panel.add(nameLabel, gbc);
 
 		JTextField nameText = new JTextField(30);
-		nameText.setBounds(100, 20, 165, 25);
-		topPanel.add(nameText);
+		nameText.setMargin(margin);
+		nameText.setFont(inputFont);
+		nameText.setForeground(inputColor);
+		gbc.gridx = 1;
+		gbc.gridy = 1;
+		gbc.anchor = GridBagConstraints.WEST;
+		panel.add(nameText, gbc);
 
-		JLabel emailLabel = new JLabel("Enter  your Email");
-		emailLabel.setBounds(10, 50, 80, 25);
-		topPanel.add(emailLabel);
+		JLabel emailLabel = new JLabel("Enter your Email");
+		emailLabel.setForeground(labelColor);
+		emailLabel.setFont(labelFont);
+		gbc.gridx = 0;
+		gbc.gridy = 2;
+		gbc.anchor = GridBagConstraints.EAST;
+		panel.add(emailLabel, gbc);
 
-		JTextField emailText = new JTextField(50);
-		emailText.setBounds(100, 50, 165, 25);
-		topPanel.add(emailText);
+		JTextField emailText = new JTextField(30);
+		emailText.setMargin(margin);
+		emailText.setFont(inputFont);
+		emailText.setForeground(inputColor);
+		gbc.gridx = 1;
+		gbc.gridy = 2;
+		gbc.anchor = GridBagConstraints.WEST;
+		panel.add(emailText, gbc);
 
-		JLabel passwordLabel = new JLabel("Password");
-		passwordLabel.setBounds(10, 80, 80, 25);
-		topPanel.add(passwordLabel);
+		JLabel passwordLabel = new JLabel("Enter Password");
+		passwordLabel.setForeground(labelColor);
+		passwordLabel.setFont(labelFont);
+		gbc.gridx = 0;
+		gbc.gridy = 3;
+		gbc.anchor = GridBagConstraints.EAST;
+		panel.add(passwordLabel, gbc);
 
-		JPasswordField passwordText = new JPasswordField(50);
-		passwordText.setBounds(100, 80, 165, 25);
-		topPanel.add(passwordText);
+		JPasswordField passwordText = new JPasswordField(30);
+		passwordText.setMargin(margin);
+		passwordText.setFont(inputFont);
+		passwordText.setForeground(inputColor);
+		gbc.gridx = 1;
+		gbc.gridy = 3;
+		gbc.anchor = GridBagConstraints.WEST;
+		panel.add(passwordText, gbc);
 
 		JLabel confirmPasswordLabel = new JLabel("Re-enter Password");
-		confirmPasswordLabel.setBounds(10, 110, 130, 25);
-		topPanel.add(confirmPasswordLabel);
+		confirmPasswordLabel.setForeground(labelColor);
+		confirmPasswordLabel.setFont(labelFont);
+		gbc.gridx = 0;
+		gbc.gridy = 4;
+		gbc.anchor = GridBagConstraints.EAST;
+		panel.add(confirmPasswordLabel, gbc);
 
-		JPasswordField confirmPasswordText = new JPasswordField(50);
-		confirmPasswordText.setBounds(150, 110, 165, 25);
-		topPanel.add(confirmPasswordText);
+		JPasswordField confirmPasswordText = new JPasswordField(30);
+		confirmPasswordText.setMargin(margin);
+		confirmPasswordText.setFont(inputFont);
+		confirmPasswordText.setForeground(inputColor);
+		gbc.gridx = 1;
+		gbc.gridy = 4;
+		gbc.anchor = GridBagConstraints.WEST;
+		panel.add(confirmPasswordText, gbc);
 
-		JButton signUpButton = new JButton("Sign Up");
-		signUpButton.setBounds(10, 140, 80, 25);
-		topPanel.add(signUpButton);
+		JButton signUpButton = new JButton("CREATE ACCOUNT");
+		signUpButton.setBackground(btnBgColor);
+		signUpButton.setForeground(Color.WHITE);
+		signUpButton.setBorder(BorderFactory.createEmptyBorder(5, 15, 5, 15));
+		signUpButton.setPreferredSize(new Dimension(200, 40));
+		gbc.gridx = 1;
+		gbc.gridy = 5;
+		panel.add(signUpButton, gbc);
 
 		signUpButton.addActionListener(new ActionListener() {
 			@Override
@@ -128,6 +163,34 @@ public class SignUpWindow extends JFrame {
 			}
 		});
 
-		this.setContentPane(topPanel);
+		this.setContentPane(panel);
+	}
+
+	/**
+	 * Registers a new user in the database with the provided name, email, and password.
+	 *
+	 * @param name     the name of the user
+	 * @param email    the email of the user
+	 * @param password the password associated with the email
+	 * @return true if the user was successfully registered, false if the user already exists or an error occurred
+	 */
+	private boolean signUpUser(String name, String email, String password) {
+		try {
+			String sql = "INSERT INTO users (name, email, password) VALUES (?, ?, ?)";
+			PreparedStatement preparedStatement = dbConnection.prepareStatement(sql);
+			preparedStatement.setString(1, name);
+			preparedStatement.setString(2, email);
+			preparedStatement.setString(3, password);
+			preparedStatement.executeUpdate();
+			return true;
+		} catch (SQLIntegrityConstraintViolationException e) {
+			// User already exists
+			JOptionPane.showMessageDialog(contentPane, "User already exists");
+			return false;
+		} catch (SQLException e) {
+			System.out.println("signUpUser: sql error: " + e.getMessage());
+			JOptionPane.showMessageDialog(contentPane, "error creating user account");
+			return false;
+		}
 	}
 }
