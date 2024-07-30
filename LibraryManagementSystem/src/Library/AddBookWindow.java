@@ -14,6 +14,7 @@ public class AddBookWindow extends JFrame {
 	private final JTextField authorField;
 	private final JTextField isbnField;
 	private final JLabel coverImageLabel;
+	private final JComboBox<String> genreComboBox;
 	private File selectedFile;
 
 	public AddBookWindow(Connection connection) {
@@ -23,7 +24,7 @@ public class AddBookWindow extends JFrame {
 		setTitle("Add Book");
 		setSize(400, 300);
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setLayout(new GridLayout(6, 2));
+		setLayout(new GridLayout(7, 2));
 
 		// Fields for book details
 		add(new JLabel("Title:"));
@@ -37,6 +38,11 @@ public class AddBookWindow extends JFrame {
 		add(new JLabel("ISBN:"));
 		isbnField = new JTextField();
 		add(isbnField);
+
+		// ComboBox for genre
+		add(new JLabel("Genre:"));
+		genreComboBox = new JComboBox<>(new String[]{"Comics", "Love Story", "Horror", "Educational", "Others"});
+		add(genreComboBox);
 
 		// Field for cover image
 		add(new JLabel("Cover Image:"));
@@ -74,15 +80,17 @@ public class AddBookWindow extends JFrame {
 		String title = titleField.getText();
 		String author = authorField.getText();
 		String isbn = isbnField.getText();
+		String genre = (String) genreComboBox.getSelectedItem();
 		String coverImagePath = selectedFile != null ? selectedFile.getAbsolutePath() : null;
 
 		try {
-			String sql = "INSERT INTO books (title, author, isbn, cover_page) VALUES (?, ?, ?, ?)";
+			String sql = "INSERT INTO books (title, author, isbn, genre, coverpage) VALUES (?, ?, ?, ?, ?)";
 			PreparedStatement preparedStatement = dbConnection.prepareStatement(sql);
 			preparedStatement.setString(1, title);
 			preparedStatement.setString(2, author);
 			preparedStatement.setString(3, isbn);
-			preparedStatement.setString(4, coverImagePath);
+			preparedStatement.setString(4, genre);
+			preparedStatement.setString(5, coverImagePath);
 			preparedStatement.executeUpdate();
 
 			JOptionPane.showMessageDialog(this, "Book added successfully!");
@@ -90,7 +98,7 @@ public class AddBookWindow extends JFrame {
 		} catch (Exception ex) {
 			System.out.println("addBook: sql error: " + ex.getMessage());
 
-			// security warning: never display program exception messages to the user
+			// Security warning: never display program exception messages to the user
 			JOptionPane.showMessageDialog(this, "Error adding book");
 		}
 	}
