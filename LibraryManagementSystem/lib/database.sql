@@ -147,6 +147,16 @@ ALTER TABLE `borrowed_books`
 ALTER TABLE `fines`
   ADD CONSTRAINT `fk_user_id_fines` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`);
 COMMIT;
+                --new change for table books replace unknown with others
+                -- Step 1: Modify the ENUM type to remove 'Unknown' and include 'Others'
+ALTER TABLE books MODIFY COLUMN genre ENUM('Comics', 'Love Story', 'Horror', 'Educational', 'Others');
+
+                    -- Step 2: Update existing records with 'Unknown' to 'Others'
+UPDATE books SET genre = 'Others' WHERE genre = 'Unknown';
+
+                    -- Step 3: Set 'Others' as the default value
+ALTER TABLE books ALTER genre SET DEFAULT 'Others';
+
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
