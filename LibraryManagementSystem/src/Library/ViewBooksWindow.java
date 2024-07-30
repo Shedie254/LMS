@@ -22,6 +22,8 @@ public class ViewBooksWindow extends JFrame {
 		JTable booksTable = new JTable(data, columnNames);
 		JScrollPane scrollPane = new JScrollPane(booksTable);
 		add(scrollPane);
+
+		setVisible(true);
 	}
 
 	private Object[][] fetchBooksData() {
@@ -39,7 +41,7 @@ public class ViewBooksWindow extends JFrame {
 				data[i][1] = resultSet.getString("title");
 				data[i][2] = resultSet.getString("author");
 				data[i][3] = resultSet.getString("isbn");
-				data[i][4] = resultSet.getBoolean("genre");
+				data[i][4] = resultSet.getString("genre");
 				i++;
 			}
 

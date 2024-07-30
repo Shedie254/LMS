@@ -13,5 +13,7 @@ public class ViewMembersWindow extends JFrame {
 		setSize(400, 300);
 		setLayout(new BoxLayout(getContentPane(), BoxLayout.Y_AXIS));
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+
+		setVisible(true);
 	}
 }

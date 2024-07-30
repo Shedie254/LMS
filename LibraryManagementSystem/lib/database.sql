@@ -49,7 +49,7 @@ CREATE TABLE `books` (
 CREATE TABLE `borrowed_books` (
   `id` int(11) NOT NULL,
   `book_title` varchar(255) NOT NULL,
-  `username` varchar(255) NOT NULL,
+  `borrowers_email` varchar(255) NOT NULL,
   `issue_date` datetime NOT NULL DEFAULT current_timestamp(),
   `return_date` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -136,8 +136,10 @@ ALTER TABLE `users`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- Constraints for dumped tables
+-- AUTO_INCREMENT for table `fines`
 --
+ALTER TABLE `borrowed_books`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- Constraints for table `fines`

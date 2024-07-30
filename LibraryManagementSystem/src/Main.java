@@ -19,7 +19,7 @@ public class Main {
 			props.load(inputStream);
 
 			// developers use different configurations for setting up their database.
-			// eg. different usernames and passwords
+			// e.g. different usernames and passwords
 			// to avoid changing this section of code everytime a developer wants
 			// to connect to their own database, we put these configuration settings
 			// in an environment file (.env)
