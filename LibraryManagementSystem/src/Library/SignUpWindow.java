@@ -19,11 +19,9 @@ public class SignUpWindow extends JFrame {
 	// Constructor method
 	public SignUpWindow(Connection dbConnection) {
 		this.dbConnection = dbConnection;
-
-		setTitle("Register");
-		setSize(800, 600);
-		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-
+		this.setTitle("Register");
+		this.setSize(800, 600);
+		this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		thisFrame = this;
 		contentPane = this.getContentPane();
 		placeSignUpComponents();
@@ -140,30 +138,26 @@ public class SignUpWindow extends JFrame {
 		gbc.gridy = 5;
 		panel.add(signUpButton, gbc);
 
-		signUpButton.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				String name = nameText.getText();
-				String email = emailText.getText();
-				String password = new String(passwordText.getPassword());
-				String confirmPassword = new String(confirmPasswordText.getPassword());
+		signUpButton.addActionListener(e -> {
+            String name = nameText.getText();
+            String email = emailText.getText();
+            String password = new String(passwordText.getPassword());
+            String confirmPassword = new String(confirmPasswordText.getPassword());
 
-				if (password.equals(confirmPassword)) {
-					System.out.print("passwords match");
-					if (signUpUser(name, email, password)) {
-						JOptionPane.showMessageDialog(contentPane, "Sign Up Successful!");
-						thisFrame.dispose();
-
-						// show login form
-						new LoginWindow(dbConnection);
-					} else {
-						JOptionPane.showMessageDialog(contentPane, "User already exists or error occurred!");
-					}
-				} else {
-					JOptionPane.showMessageDialog(thisFrame, "Passwords do not match!");
-				}
-			}
-		});
+            if (password.equals(confirmPassword)) {
+                //System.out.print("passwords match");
+                if (signUpUser(name, email, password)) {
+                    JOptionPane.showMessageDialog(contentPane, "Sign Up Successful!");
+                    thisFrame.dispose();
+                    // show login form
+                    new LoginWindow(dbConnection);
+                } else {
+                    JOptionPane.showMessageDialog(contentPane, "User already exists or error occurred!");
+                }
+            } else {
+                JOptionPane.showMessageDialog(thisFrame, "Passwords do not match!");
+            }
+        });
 
 		// redirect user to login page.
 		// in case they already have an account created
@@ -203,11 +197,11 @@ public class SignUpWindow extends JFrame {
 		} catch (SQLIntegrityConstraintViolationException e) {
 			// User already exists
 			JOptionPane.showMessageDialog(contentPane, "User already exists");
-			return false;
+			return (false);
 		} catch (SQLException e) {
 			System.out.println("signUpUser: sql error: " + e.getMessage());
 			JOptionPane.showMessageDialog(contentPane, "error creating user account");
-			return false;
+			return (false);
 		}
 	}
 }
