@@ -13,9 +13,11 @@ import java.sql.SQLException;
 public class LendBookWindow extends JFrame {
 	private final Connection dbConnection;
 	private final Container contentPane;
+	private final Book book;
 
-	public LendBookWindow(Connection dbConnection) {
+	public LendBookWindow(Connection dbConnection, Book book) {
 		this.dbConnection = dbConnection;
+		this.book = book;
 
 		setTitle("Lend Book");
 		setSize(800, 600);
@@ -27,8 +29,7 @@ public class LendBookWindow extends JFrame {
 		panel.setLayout(new FlowLayout());
 
 		// display book cover
-		Path imageFile = Paths.get(System.getProperty("user.dir"), "LibraryManagementSystem", "lib", "images", "Everything I Know About Women.jpeg");
-		ImageIcon icon = new ImageIcon(imageFile.toString());
+		ImageIcon icon = new ImageIcon(book.coverPage());
 		JLabel bookCover = new JLabel(icon);
 		panel.add(bookCover);
 
@@ -42,13 +43,7 @@ public class LendBookWindow extends JFrame {
 		JPanel rightPanel = new JPanel();
 		rightPanel.setLayout(new GridLayout(0, 2));
 
-		// book-id
-		JLabel titleLabel = new JLabel("Book Title");
-		JTextField titleField = new JTextField(15);
-		rightPanel.add(titleLabel);
-		rightPanel.add(titleField);
-
-		JLabel emailLabel = new JLabel("Email");
+		JLabel emailLabel = new JLabel("Borrowers Email:");
 		JTextField emailField = new JTextField(15);
 		rightPanel.add(emailLabel);
 		rightPanel.add(emailField);
@@ -57,7 +52,7 @@ public class LendBookWindow extends JFrame {
 		lendButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				String bookTitle = titleField.getText();
+				String bookTitle = book.title();
 				String borrowersEmail = emailField.getText();
 
 				// TODO: verify user exists

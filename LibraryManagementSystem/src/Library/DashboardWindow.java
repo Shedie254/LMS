@@ -71,7 +71,7 @@ public class DashboardWindow extends JFrame {
 					JLabel imageLabel = new JLabel(imageIcon);
 					imageLabel.addMouseListener(new java.awt.event.MouseAdapter() {
 						public void mouseClicked(java.awt.event.MouseEvent evt) {
-							new LendBookWindow(dbConnection).setVisible(true);
+							new LendBookWindow(dbConnection, book);
 						}
 					});
 					centerPanel.add(imageLabel);
@@ -102,43 +102,25 @@ public class DashboardWindow extends JFrame {
 			}
 		});
 
-		JButton signUpButton = createStyledButton("SignUp");
-		signUpButton.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				new SignUpWindow(dbConnection);
-			}
-		});
-
-		JButton loginButton = createStyledButton("Login");
-		loginButton.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				new LoginWindow(dbConnection);
-			}
-		});
+		// no need for signUpButton and loginButton as these pages are
+		// displayed at the start of the program.
 
 		JButton viewMembersButton = createStyledButton("View Members");
 		viewMembersButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				new ViewMembersWindow(dbConnection).setVisible(true);
+				new ViewMembersWindow(dbConnection);
 			}
 		});
 
-		JButton lendBookButton = createStyledButton("Lend Book");
-		lendBookButton.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				new LendBookWindow(dbConnection).setVisible(true);
-			}
-		});
+		// removed lendBookButton. users will be required to click on a book
+		// to go to the LendBookWindow
 
 		JButton returnBookButton = createStyledButton("Return Book");
 		returnBookButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				new ReturnBookWindow(dbConnection).setVisible(true);
+				new ReturnBookWindow(dbConnection);
 			}
 		});
 
@@ -146,7 +128,7 @@ public class DashboardWindow extends JFrame {
 		globalSearchButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				new GlobalSearchWindow(dbConnection).setVisible(true);
+				new GlobalSearchWindow(dbConnection);
 			}
 		});
 
@@ -163,10 +145,7 @@ public class DashboardWindow extends JFrame {
 
 		topPanel.add(addBookButton);
 		topPanel.add(viewBooksButton);
-		topPanel.add(signUpButton);
-		topPanel.add(loginButton);
 		topPanel.add(viewMembersButton);
-		topPanel.add(lendBookButton);
 		topPanel.add(returnBookButton);
 		topPanel.add(globalSearchButton);
 		topPanel.add(refreshButton);
