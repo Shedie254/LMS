@@ -4,11 +4,11 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.NoSuchElementException;
 
 public class LendBookWindow extends JFrame {
 	private final Connection dbConnection;
@@ -55,23 +55,44 @@ public class LendBookWindow extends JFrame {
 				String bookTitle = book.title();
 				String borrowersEmail = emailField.getText();
 
-				// TODO: verify user exists
-
-				String query = "INSERT INTO borrowed_books(book_title, borrowers_email, issue_date) VALUES(?, ?, CURRENT_TIME)";
+				// verify user exists
 				try {
-					PreparedStatement stmt = dbConnection.prepareStatement(query);
-					stmt.setString(1, bookTitle);
-					stmt.setString(2, borrowersEmail);
-					stmt.executeUpdate();
+					if (!isMemberExist(borrowersEmail)) {
+						throw new NoSuchElementException("Cannot lend book to user who is not a library member");
+					}
 
-					JOptionPane.showMessageDialog(contentPane, "book lent to " + borrowersEmail);
+					lendBook(bookTitle, borrowersEmail);
+
 				} catch (SQLException ex) {
 					System.out.println("lendBookWindow: error lending book: " + ex.getMessage());
 					JOptionPane.showMessageDialog(contentPane, "error lending book!");
+				} catch(NoSuchElementException ex) {
+					System.out.println("lendBookWindow: error lending book: " + ex.getMessage());
+					JOptionPane.showMessageDialog(contentPane, ex.getMessage());
 				}
+
 			}
 		});
 		rightPanel.add(lendButton);
 		return rightPanel;
+	}
+
+	private boolean isMemberExist(String userEmail) throws SQLException {
+		String query = "SELECT COUNT(*) FROM users WHERE email = ?";
+		PreparedStatement stmt = dbConnection.prepareStatement(query);
+		stmt.setString(1, userEmail);
+		ResultSet rs = stmt.executeQuery();
+		rs.next();
+		return rs.getInt(1) > 0;
+	}
+
+	private void lendBook(String bookTitle, String borrowersEmail) throws SQLException {
+		String query = "INSERT INTO borrowed_books(book_title, borrowers_email, issue_date) VALUES(?, ?, CURRENT_TIME)";
+		PreparedStatement stmt = dbConnection.prepareStatement(query);
+		stmt.setString(1, bookTitle);
+		stmt.setString(2, borrowersEmail);
+		stmt.executeUpdate();
+
+		JOptionPane.showMessageDialog(contentPane, "book lent to " + borrowersEmail);
 	}
 }
