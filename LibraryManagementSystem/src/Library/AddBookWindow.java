@@ -84,7 +84,7 @@ public class AddBookWindow extends JFrame {
 		String coverImagePath = selectedFile != null ? selectedFile.getAbsolutePath() : null;
 
 		try {
-			String sql = "INSERT INTO books (title, author, isbn, genre, coverpage) VALUES (?, ?, ?, ?, ?)";
+			String sql = "INSERT INTO books (title, author, isbn, genre, cover_page) VALUES (?, ?, ?, ?, ?)";
 			PreparedStatement preparedStatement = dbConnection.prepareStatement(sql);
 			preparedStatement.setString(1, title);
 			preparedStatement.setString(2, author);
