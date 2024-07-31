@@ -23,6 +23,8 @@ public class ViewMembersWindow extends JFrame {
 
 		initializeComponents();
 		loadMembersData();
+
+		setVisible(true);
 	}
 
 	private void initializeComponents() {
