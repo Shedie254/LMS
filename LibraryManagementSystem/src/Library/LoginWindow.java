@@ -3,6 +3,8 @@ package Library;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -11,11 +13,13 @@ import java.util.Vector;
 import javax.swing.*;
 
 public class LoginWindow extends JFrame {
+    private final JFrame thisFrame;
     private final Container contentPane;
     private final Connection dbConnection;
 
     public LoginWindow(Connection dbConnection) {
         this.dbConnection = dbConnection;
+        this.thisFrame = this;
 
         setTitle("Login");
         setSize(800, 600);
@@ -138,6 +142,21 @@ public class LoginWindow extends JFrame {
                 }
             }
         });
+
+        // redirect user to signup page.
+        // just in case they don't have an account to login into
+        JLabel signupLabel = new JLabel("Don't have an account? Signup");
+        signupLabel.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                thisFrame.dispose();
+                new SignUpWindow(dbConnection);
+            }
+        });
+        gbc.gridx = 1;
+        gbc.gridy = 5;
+        gbc.anchor = GridBagConstraints.EAST;
+        panel.add(signupLabel, gbc);
 
         contentPane.setLayout(new GridBagLayout());
         gbc.gridx = 0;
