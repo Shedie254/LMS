@@ -132,7 +132,7 @@ public class LoginWindow extends JFrame {
                 if (loginUser(email, password, role)) {
                     JOptionPane.showMessageDialog(contentPane, "Login Successful!");
                     dispose();
-                    //new DashboardWindow(dbConnection);
+                    new DashboardWindow(dbConnection);
                 } else {
                     JOptionPane.showMessageDialog(contentPane, "Invalid email, password or role!");
                 }
@@ -147,7 +147,7 @@ public class LoginWindow extends JFrame {
     //This method fetches data from the database to authenticate the user provided credentials
     private boolean loginUser(String email, String password, String role) {
         try {
-            String sql = "SELECT * FROM users WHERE email = ? AND password = ? AND role_id = ?";
+            String sql = "SELECT * FROM users WHERE email = ? AND password = ? AND role = ?";
 
             PreparedStatement preparedStatement = dbConnection.prepareStatement(sql);
             preparedStatement.setString(1, email);
