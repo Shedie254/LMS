@@ -1,5 +1,6 @@
 import Library.DashboardWindow;
 import Library.Database;
+import Library.LoginWindow;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -31,7 +32,8 @@ public class Main {
 			Database libraryDB = new Database(dbUser, dbPass, dbName);
 
 			// start GUI application
-			new DashboardWindow(libraryDB.getConnection());
+//			new DashboardWindow(libraryDB.getConnection());
+			new LoginWindow(libraryDB.getConnection());
 
 		} catch (IOException | SQLException e) {
 			System.out.println("main: error connecting to database: " + e.getMessage());
