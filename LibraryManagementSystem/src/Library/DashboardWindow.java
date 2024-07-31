@@ -1,6 +1,7 @@
 package Library;
 
 import javax.swing.*;
+import javax.swing.border.LineBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -33,19 +34,26 @@ public class DashboardWindow extends JFrame {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setLayout(new BorderLayout());
 
-		// Left side buttons
-		JPanel leftPanel = displayLeftSideButtons();
-		add(leftPanel, BorderLayout.WEST);
+		// Top panel for buttons
+		JPanel topPanel = displayTopButtons();
+		add(topPanel, BorderLayout.NORTH);
 
 		// Center panel for images
 		JPanel centerPanel = displayBookCovers();
 		add(centerPanel, BorderLayout.CENTER);
+
+		// Add some welcoming colors
+		getContentPane().setBackground(new Color(19, 137, 214)); // Light yellow background
+		topPanel.setBackground(new Color(22, 77, 134)); // Light blue background
+
 		setVisible(true);
 	}
 
 	private JPanel displayBookCovers() {
 		JPanel centerPanel = new JPanel();
 		centerPanel.setLayout(new GridLayout(2, 4, 10, 10));
+		centerPanel.setBackground(new Color(204, 255, 204));
+		centerPanel.setBorder(new LineBorder(Color.BLACK, 1)); // Visible border
 
 		if (books.isEmpty()) {
 			JLabel label = new JLabel("No books in library");
@@ -56,8 +64,7 @@ public class DashboardWindow extends JFrame {
 
 				File file = new File(imageFile);
 				if (!file.exists()) {
-					// inverted control flow, to log book cover pages not loaded.
-					// TODO: show a default ImageIcon for books with no cover pages.
+					// Show a default ImageIcon for books with no cover pages.
 					System.out.println("DashboardWindow: missing book cover " + imageFile);
 				} else {
 					ImageIcon imageIcon = new ImageIcon(imageFile);
@@ -75,11 +82,11 @@ public class DashboardWindow extends JFrame {
 		return centerPanel;
 	}
 
-	private JPanel displayLeftSideButtons() {
-		JPanel leftPanel = new JPanel();
-		leftPanel.setLayout(new BoxLayout(leftPanel, BoxLayout.Y_AXIS));
+	private JPanel displayTopButtons() {
+		JPanel topPanel = new JPanel();
+		topPanel.setLayout(new FlowLayout());
 
-		JButton addBookButton = new JButton("Add Book");
+		JButton addBookButton = createStyledButton("Add Book");
 		addBookButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -87,7 +94,7 @@ public class DashboardWindow extends JFrame {
 			}
 		});
 
-		JButton viewBooksButton = new JButton("View Books");
+		JButton viewBooksButton = createStyledButton("View Books");
 		viewBooksButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -95,7 +102,7 @@ public class DashboardWindow extends JFrame {
 			}
 		});
 
-		JButton signUpButton = new JButton("SignUp");
+		JButton signUpButton = createStyledButton("SignUp");
 		signUpButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -103,7 +110,7 @@ public class DashboardWindow extends JFrame {
 			}
 		});
 
-		JButton loginButton = new JButton("Login");
+		JButton loginButton = createStyledButton("Login");
 		loginButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -111,38 +118,39 @@ public class DashboardWindow extends JFrame {
 			}
 		});
 
-		JButton viewMembersButton = new JButton("View Members");
+		JButton viewMembersButton = createStyledButton("View Members");
 		viewMembersButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				new ViewMembersWindow(dbConnection);
+				new ViewMembersWindow(dbConnection).setVisible(true);
 			}
 		});
 
-		JButton lendBookButton = new JButton("Lend Book");
+		JButton lendBookButton = createStyledButton("Lend Book");
 		lendBookButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				new LendBookWindow(dbConnection);
+				new LendBookWindow(dbConnection).setVisible(true);
 			}
 		});
 
-		JButton returnBookButton = new JButton("Return Book");
+		JButton returnBookButton = createStyledButton("Return Book");
 		returnBookButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				new ReturnBookWindow(dbConnection);
+				new ReturnBookWindow(dbConnection).setVisible(true);
 			}
 		});
 
-		JButton globalSearchButton = new JButton("Global Search");
+		JButton globalSearchButton = createStyledButton("Global Search");
 		globalSearchButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				new GlobalSearchWindow(dbConnection);
+				new GlobalSearchWindow(dbConnection).setVisible(true);
 			}
 		});
-		JButton refreshButton = new JButton("Refresh");
+
+		JButton refreshButton = createStyledButton("Refresh");
 		refreshButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -153,21 +161,31 @@ public class DashboardWindow extends JFrame {
 			}
 		});
 
-		leftPanel.add(addBookButton);
-		leftPanel.add(viewBooksButton);
-		leftPanel.add(signUpButton);
-		leftPanel.add(loginButton);
-		leftPanel.add(viewMembersButton);
-		leftPanel.add(lendBookButton);
-		leftPanel.add(returnBookButton);
-		leftPanel.add(globalSearchButton);
-		leftPanel.add(refreshButton);
-		return leftPanel;
+		topPanel.add(addBookButton);
+		topPanel.add(viewBooksButton);
+		topPanel.add(signUpButton);
+		topPanel.add(loginButton);
+		topPanel.add(viewMembersButton);
+		topPanel.add(lendBookButton);
+		topPanel.add(returnBookButton);
+		topPanel.add(globalSearchButton);
+		topPanel.add(refreshButton);
+
+		return topPanel;
+	}
+
+	private JButton createStyledButton(String text) {
+		JButton button = new JButton(text);
+		button.setBackground(new Color(153, 204, 255)); // Light blue background
+		button.setForeground(Color.BLACK); // Black text
+		button.setFocusPainted(false);
+		button.setBorder(new LineBorder(Color.BLACK, 1));
+		return button;
 	}
 
 	/*
-	Fetch books from database
-	 */
+    Fetch books from database
+    */
 	private ArrayList<Book> getBooks() throws SQLException {
 		ArrayList<Book> books = new ArrayList<>();
 
