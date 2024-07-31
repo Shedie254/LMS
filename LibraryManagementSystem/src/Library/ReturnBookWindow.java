@@ -15,5 +15,6 @@ public class ReturnBookWindow extends JFrame {
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
 		// TODO: implement return book feature
+		setVisible(true);
 	}
 }

@@ -1,5 +1,6 @@
 import Library.DashboardWindow;
 import Library.Database;
+import Library.LoginWindow;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -19,7 +20,7 @@ public class Main {
 			props.load(inputStream);
 
 			// developers use different configurations for setting up their database.
-			// eg. different usernames and passwords
+			// e.g. different usernames and passwords
 			// to avoid changing this section of code everytime a developer wants
 			// to connect to their own database, we put these configuration settings
 			// in an environment file (.env)
@@ -31,7 +32,8 @@ public class Main {
 			Database libraryDB = new Database(dbUser, dbPass, dbName);
 
 			// start GUI application
-			new DashboardWindow(libraryDB.getConnection());
+//			new DashboardWindow(libraryDB.getConnection());
+			new LoginWindow(libraryDB.getConnection());
 
 		} catch (IOException | SQLException e) {
 			System.out.println("main: error connecting to database: " + e.getMessage());

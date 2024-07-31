@@ -23,6 +23,8 @@ public class GlobalSearchWindow extends JFrame {
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
 		initializeComponents();
+
+		setVisible(true);
 	}
 
 	private void initializeComponents() {

@@ -4,6 +4,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
@@ -162,6 +164,21 @@ public class SignUpWindow extends JFrame {
 				}
 			}
 		});
+
+		// redirect user to login page.
+		// in case they already have an account created
+		JLabel loginLabel = new JLabel("Already have an account? Login");
+		loginLabel.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				thisFrame.dispose();
+				new LoginWindow(dbConnection);
+			}
+		});
+		gbc.gridx = 1;
+		gbc.gridy = 6;
+		gbc.anchor = GridBagConstraints.EAST;
+		panel.add(loginLabel, gbc);
 
 		this.setContentPane(panel);
 	}

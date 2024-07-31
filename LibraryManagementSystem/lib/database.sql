@@ -49,7 +49,7 @@ CREATE TABLE `books` (
 CREATE TABLE `borrowed_books` (
   `id` int(11) NOT NULL,
   `book_title` varchar(255) NOT NULL,
-  `username` varchar(255) NOT NULL,
+  `borrowers_email` varchar(255) NOT NULL,
   `issue_date` datetime NOT NULL DEFAULT current_timestamp(),
   `return_date` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -136,8 +136,10 @@ ALTER TABLE `users`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- Constraints for dumped tables
+-- AUTO_INCREMENT for table `fines`
 --
+ALTER TABLE `borrowed_books`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- Constraints for table `fines`
@@ -145,6 +147,16 @@ ALTER TABLE `users`
 ALTER TABLE `fines`
   ADD CONSTRAINT `fk_user_id_fines` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`);
 COMMIT;
+                --new change for table books replace unknown with others
+                -- Step 1: Modify the ENUM type to remove 'Unknown' and include 'Others'
+ALTER TABLE books MODIFY COLUMN genre ENUM('Comics', 'Love Story', 'Horror', 'Educational', 'Others');
+
+                    -- Step 2: Update existing records with 'Unknown' to 'Others'
+UPDATE books SET genre = 'Others' WHERE genre = 'Unknown';
+
+                    -- Step 3: Set 'Others' as the default value
+ALTER TABLE books ALTER genre SET DEFAULT 'Others';
+
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
