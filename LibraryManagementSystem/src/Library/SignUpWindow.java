@@ -6,6 +6,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.security.NoSuchAlgorithmException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
@@ -194,11 +195,13 @@ public class SignUpWindow extends JFrame {
 	 */
 	private boolean signUpUser(String name, String email, String password) {
 		try {
+			String hashedPassword = Auth.hashPassword(password);
+
 			String sql = "INSERT INTO users (name, email, password) VALUES (?, ?, ?)";
 			PreparedStatement preparedStatement = dbConnection.prepareStatement(sql);
 			preparedStatement.setString(1, name);
 			preparedStatement.setString(2, email);
-			preparedStatement.setString(3, password);
+			preparedStatement.setString(3, hashedPassword);
 			preparedStatement.executeUpdate();
 			return true;
 		} catch (SQLIntegrityConstraintViolationException e) {
@@ -207,6 +210,10 @@ public class SignUpWindow extends JFrame {
 			return false;
 		} catch (SQLException e) {
 			System.out.println("signUpUser: sql error: " + e.getMessage());
+			JOptionPane.showMessageDialog(contentPane, "error creating user account");
+			return false;
+		} catch (NoSuchAlgorithmException e) {
+			System.out.println("signUpUser: " + e.getMessage());
 			JOptionPane.showMessageDialog(contentPane, "error creating user account");
 			return false;
 		}
