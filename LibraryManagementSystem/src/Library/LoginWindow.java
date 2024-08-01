@@ -134,13 +134,16 @@ public class LoginWindow extends JFrame {
 				String password = new String(passwordText.getPassword());
 				String role = (String) roleComboBox.getSelectedItem();
 
-				if (loginUser(email, password, role)) {
-					JOptionPane.showMessageDialog(contentPane, "Login Successful!");
-					dispose();
-					new DashboardWindow(dbConnection);
-				} else {
+				boolean loginSuccess = loginUser(email, password, role);
+				if (!loginSuccess) {
 					JOptionPane.showMessageDialog(contentPane, "Invalid email, password or role!");
+					return;
 				}
+
+				// login successful 'redirect' to DashboardWindow
+				JOptionPane.showMessageDialog(contentPane, "Login Successful!");
+				dispose();
+				new DashboardWindow(dbConnection);
 			}
 		});
 
@@ -168,15 +171,15 @@ public class LoginWindow extends JFrame {
 	//This method fetches data from the database to authenticate the user provided credentials
 	private boolean loginUser(String email, String password, String role) {
 		try {
-			String sql = "SELECT * FROM users WHERE email = ? AND password = ? AND role = ?";
-
+			String sql = "SELECT * FROM users WHERE email = ? AND role = ?";
 			PreparedStatement preparedStatement = dbConnection.prepareStatement(sql);
 			preparedStatement.setString(1, email);
-			preparedStatement.setString(2, password);
-			preparedStatement.setString(3, role);
+			preparedStatement.setString(2, role);
 
 			ResultSet resultSet = preparedStatement.executeQuery();
-			return resultSet.next();
+			resultSet.next();
+			String dbPassword = resultSet.getString("password");
+			return Auth.verifyPassword(dbPassword, password);
 
 		} catch (SQLException e) {
 			System.out.println("SQL error logging in user: " + e.getMessage());
