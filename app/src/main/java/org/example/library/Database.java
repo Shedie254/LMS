@@ -1,4 +1,4 @@
-package Library;
+package org.example.library;
 
 import java.io.IOException;
 import java.sql.Connection;
@@ -10,9 +10,6 @@ public class Database {
 
 	public Database(String dbUser, String dbPass, String dbName) throws SQLException, ClassNotFoundException, IOException {
 		String URL = "jdbc:mysql://localhost:3306/" + dbName;
-
-		// you might not need this, but kindly DO NOT DELETE
-		Class.forName("com.mysql.jdbc.Driver");
 		dbConnection = DriverManager.getConnection(URL, dbUser, dbPass);
 		System.out.println("connected to database successfully");
 	}

@@ -90,3 +90,6 @@ nb-configuration.xml
 *.log
 .env
 mysql-connector-j-9.0.0/
+
+# Ignore Gradle build output directory
+build

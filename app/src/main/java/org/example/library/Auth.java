@@ -1,4 +1,4 @@
-package Library;
+package org.example.library;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;

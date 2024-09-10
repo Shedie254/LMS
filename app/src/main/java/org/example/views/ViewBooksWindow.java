@@ -1,4 +1,4 @@
-package Library;
+package org.example.views;
 
 import javax.swing.*;
 import java.sql.Connection;

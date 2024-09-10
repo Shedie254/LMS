@@ -1,4 +1,4 @@
-package Library;
+package org.example.views;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -7,6 +7,9 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+
+import org.example.library.Database;
+import org.example.library.Book;
 
 public class ViewMembersWindow extends JFrame {
 	private final Connection dbConnection;

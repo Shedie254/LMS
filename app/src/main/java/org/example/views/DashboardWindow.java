@@ -1,4 +1,4 @@
-package Library;
+package org.example.views;
 
 import javax.swing.*;
 import javax.swing.border.LineBorder;
@@ -11,6 +11,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+
+import org.example.library.Book;
 
 public class DashboardWindow extends JFrame {
 	private final Connection dbConnection;

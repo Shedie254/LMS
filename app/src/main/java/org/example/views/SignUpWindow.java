@@ -1,4 +1,4 @@
-package Library;
+package org.example.views;
 
 import javax.swing.*;
 import java.awt.*;
@@ -11,6 +11,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.SQLIntegrityConstraintViolationException;
+
+import org.example.library.Auth;
 
 public class SignUpWindow extends JFrame {
 	private final JFrame thisFrame;

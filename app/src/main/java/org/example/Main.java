@@ -1,11 +1,13 @@
-import Library.Database;
-import Library.LoginWindow;
+package org.example;
 
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.sql.SQLException;
 import java.util.Properties;
+
+import org.example.library.Database;
+import org.example.views.LoginWindow;
 
 public class Main {
 	public static void main(String[] args) {
